@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class makingfriends {
 
 	Map<Integer, Node> map = new HashMap<>();
-	
+
 	public void readFile() {
 
 		Scanner read = null;
@@ -22,34 +22,34 @@ public class makingfriends {
 		int N = read.nextInt();
 		int M = read.nextInt();
 
-	
 		for (int i = 0; i < N; i++) {
-			map.put(i+1, new Node(i+1));
+			map.put(i + 1, new Node(i + 1));
 		}
-		
+
 		for (int i = 0; i < M; i++) {
 			int from = read.nextInt();
 			int to = read.nextInt();
 			int w = read.nextInt();
-			
+
 			map.get(from).getAdjacent().put(map.get(to), w);
 		}
-		
-		map.forEach((k,v)->{
-			System.out.print("node: "+k+" has a arc to ");
-			
-			v.getAdjacent().forEach((k1,v1)->{
-				System.out.println(k1.val + " with a weight of "+v1);
+
+		map.forEach((k, v) -> {
+			System.out.print("node: " + k + " has a arc to ");
+
+			v.getAdjacent().forEach((k1, v1) -> {
+				System.out.println(k1.val + " with a weight of " + v1);
 			});
-			
+
 			System.out.println("-----------");
 		});
 
 	}
-	
+
 	public void run() {
-		//TODO
-		//implement minimum spanning tree algorithm
+		// TODO
+		// implement minimum spanning tree algorithm
+		//useless commit
 	}
 
 	class Node {
