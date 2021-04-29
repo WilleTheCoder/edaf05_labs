@@ -1,7 +1,5 @@
 package lab3;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,20 +7,16 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
+
 public class MakingFriends2 {
 
-	public void readFile() {
+	public void run() {
 
 		Map<Integer, Node> map = new HashMap<>();
 		PriorityQueue<Edge> q = new PriorityQueue<>();
 
-		Scanner read = null;
-		try {
-			read = new Scanner(new File("./lab3/1small.in"));
-		} catch (FileNotFoundException e) {
-			System.out.println("Error reading file..");
-		}
-
+		Scanner read = new Scanner(System.in);
+	
 		int N = read.nextInt();
 		int M = read.nextInt();
 
@@ -40,12 +34,12 @@ public class MakingFriends2 {
 			map.get(to - 1).addEdge(map.get(from - 1), w);
 		}
 
-		boolean[] added = new boolean[N];
+		boolean[] visited = new boolean[N];
 
 		List<Edge> mst = new ArrayList<>();
 
 		q.addAll(map.get(0).getEdges());
-		added[0] = true;
+		visited[0] = true;
 
 		Edge c_edge;
 
@@ -53,12 +47,11 @@ public class MakingFriends2 {
 
 			c_edge = q.poll();
 
-			if (added[c_edge.src.index] && !added[c_edge.dest.index]) {
+			if (visited[c_edge.src.index] && !visited[c_edge.dest.index]) {
 				mst.add(c_edge);
 				q.addAll(map.get(c_edge.dest.index).getEdges());
-				added[c_edge.dest.index] = true;
+				visited[c_edge.dest.index] = true;
 			}
-
 		}
 
 		int res = 0;
@@ -71,27 +64,16 @@ public class MakingFriends2 {
 	}
 
 	class Node {
-
-		private int val;
 		private List<Edge> edges;
 		private int index;
 
 		public Node(int index) {
 			this.index = index;
-			val = Integer.MAX_VALUE;
 			edges = new ArrayList<>();
 		}
 
 		public int getIndex() {
 			return index;
-		}
-
-		public int getVal() {
-			return val;
-		}
-
-		public void setVal(int val) {
-			this.val = val;
 		}
 
 		public void addEdge(Node dest, int w) {
@@ -119,6 +101,10 @@ public class MakingFriends2 {
 			return w;
 		}
 
+		public Node getSrc() {
+			return src;
+		}
+
 		public Node getDest() {
 			return dest;
 		}
@@ -132,7 +118,7 @@ public class MakingFriends2 {
 
 	public static void main(String[] args) {
 		MakingFriends2 mf = new MakingFriends2();
-		mf.readFile();
+		mf.run();
 
 	}
 
