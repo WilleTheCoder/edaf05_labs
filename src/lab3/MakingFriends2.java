@@ -14,26 +14,25 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class makingfriends {
+public class MakingFriends2 {
 
 	public void readFile() {
 
 		Map<Integer, Node> map = new HashMap<>();
-		PriorityQueue<Node> q = new PriorityQueue<Node>();
+		PriorityQueue<Edge> q = new PriorityQueue<>();
 
 		Scanner read = null;
 		try {
-			read = new Scanner(new File("./lab3/2med.in"));
+			read = new Scanner(new File("./lab3/1small.in"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Error reading file..");
 		}
-		
+
 		int N = read.nextInt();
 		int M = read.nextInt();
 
-		for (int i = 1; i <= N; i++) {
+		for (int i = 0; i < N; i++) {
 			Node n = new Node(i);
-			q.add(n);
 			map.put(i, n);
 		}
 
@@ -42,43 +41,41 @@ public class makingfriends {
 			int to = read.nextInt();
 			int w = read.nextInt();
 
-			map.get(from).addEdge(map.get(to), w);
-			map.get(to).addEdge(map.get(from), w);
+			map.get(from - 1).addEdge(map.get(to - 1), w);
+			map.get(to - 1).addEdge(map.get(from - 1), w);
 		}
-		
-		map.get(1).setVal(0);
-		ArrayList<Node> mst = new ArrayList<>();
+
+		boolean[] added = new boolean[N];
+
+		List<Edge> mst = new ArrayList<>();
+
+		q.addAll(map.get(0).getEdges());
+		added[0] = true;
+
+		Edge c_edge;
 
 		while (!q.isEmpty()) {
-			Node c_node = q.poll();
-			mst.add(c_node);
-		
 
-			for (Edge e : c_node.getEdges()) {
+			c_edge = q.poll();
 
-				Node i = e.getDest();
-
-				if (q.contains(i) && e.getWeight() < i.getVal()) {
-					i.setVal(e.getWeight());
-					q.remove(i);
-					q.offer(i);
-				}
+			if (added[c_edge.src.index] && !added[c_edge.dest.index]) {
+				mst.add(c_edge);
+				q.addAll(map.get(c_edge.dest.index).getEdges());
+				added[c_edge.dest.index] = true;
 			}
-		}
-		
-		int res = 0;
-		
-		for (int i = 0; i < mst.size(); i++) {
-			res += mst.get(i).val;
-		}
-		
-		System.out.println(res);
 
+		}
+
+		int res = 0;
+		for (int i = 0; i < mst.size(); i++) {
+			res += mst.get(i).getWeight();
+		}
+
+		System.out.println(res);
 
 	}
 
-
-	class Node implements Comparable<Node> {
+	class Node {
 
 		private int val;
 		private List<Edge> edges;
@@ -103,27 +100,24 @@ public class makingfriends {
 		}
 
 		public void addEdge(Node dest, int w) {
-			edges.add(new Edge(dest, w));
+			edges.add(new Edge(this, dest, w));
 		}
 
 		public List<Edge> getEdges() {
 			return edges;
 		}
 
-		@Override
-		public int compareTo(Node o) {
-			return this.val-o.val;
-		}
-
 	}
 
-	class Edge {
+	class Edge implements Comparable<Edge> {
 		private int w;
 		private Node dest;
+		private Node src;
 
-		public Edge(Node dest, int weight) {
+		public Edge(Node src, Node dest, int weight) {
 			this.w = weight;
 			this.dest = dest;
+			this.src = src;
 		}
 
 		public int getWeight() {
@@ -134,10 +128,15 @@ public class makingfriends {
 			return dest;
 		}
 
+		@Override
+		public int compareTo(Edge o) {
+			return this.w - o.w;
+		}
+
 	}
 
 	public static void main(String[] args) {
-		makingfriends mf = new makingfriends();
+		MakingFriends2 mf = new MakingFriends2();
 		mf.readFile();
 
 	}
