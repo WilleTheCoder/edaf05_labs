@@ -2,8 +2,9 @@ package lab4;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +15,8 @@ public class closestpair {
 	List<Player> players = new ArrayList<>();
 
 	void init() {
+		//long t0 = System.currentTimeMillis();
+		
 		Scanner read = null;
 		try {
 			read = new Scanner(new File("./data/lab4/6huger.in"));
@@ -35,9 +38,23 @@ public class closestpair {
 		Collections.sort(pX, new XCompare());
 		Collections.sort(pY, new YCompare());
 
+		//long t1 = System.currentTimeMillis();
+		
+		//long rt = t1-t0;
+		//long t2 = System.currentTimeMillis();
 		double distance = closestPair(pX, pY, n_players);
-		System.out.println("distance is: " + distance);
+		//long t3 = System.currentTimeMillis();
+		//long at = t3-t2;
+		
+		DecimalFormat df = new DecimalFormat("0.000000");
+		df.setRoundingMode(RoundingMode.HALF_UP);
+		
+		System.out.println("distance is: " + df.format(distance));
 
+		//System.out.println("time for reading file: " + rt);
+		//System.out.println("time for algorithm: " + at);
+		
+		
 		read.close();
 
 	}
@@ -79,7 +96,6 @@ public class closestpair {
 					d = dist;
 			}
 		}
-
 		return d;
 	}
 
