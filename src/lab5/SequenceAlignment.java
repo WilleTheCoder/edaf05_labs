@@ -23,19 +23,19 @@ public class SequenceAlignment {
 
 		Scanner read = null;
 		try {
-			read = new Scanner(new File("./data/lab5/1small.in"));
+			read = new Scanner(new File("./data/lab5/4huge.in"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Error reading file: " + e.getMessage());
 		}
 
-		seq = String.join("", read.nextLine().split(" "));
-
+		seq = String.join("",read.nextLine().split(" "));
+		System.out.println(seq);
 		int l = seq.length();
 		
 		for (int i = 0; i < l; i++)
 			map.put(seq.charAt(i), i);
 
-		mx = new int[l][l];
+		mx = new int[l][l]; //matrix with cost of match/mismatch
 
 		for (int i = 0; i < mx.length; i++) {
 			for (int j = 0; j < mx.length; j++) {
@@ -45,7 +45,7 @@ public class SequenceAlignment {
 
 		int q = read.nextInt();
 		
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < q; i++) {
 			sq0 = read.next();
 			sq1 = read.next();
 			
@@ -63,7 +63,7 @@ public class SequenceAlignment {
 		for (int j = 0; j < m+1; j++)
 			opt[0][j] = delta*j;
 	
-		
+		//O(nm)
 		for (int i = 1; i < n+1; i++) {
 			for (int j = 1; j < m+1; j++) {
 				
@@ -88,6 +88,7 @@ public class SequenceAlignment {
 	public String opt(int n, int m) {
 		
 		while(true) {
+			
 		if(n == 0)
 			return space.repeat(m) + sq0 + " " + sq1; 
 		
